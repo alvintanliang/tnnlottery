@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>LZT幸运抽奖</title>
+    <link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/style.css">
+  </head>
+
+  <body>
+    <div class="containner user-list" >
+        <!-- <div class="card card-me card-sm card-focus">
+            <img class="card-img-top" src="data/liyanfei.png">
+            <div class="card-body">李燕凤</div>
+        </div> -->
+    </div>
+
+    <div class="fixed-bottom luck-bar">
+        <!-- <div class="card card-me card-md">
+            <img class="card-img-top" src="data/liyanfei.png">
+            <div class="card-body">李燕凤</div>
+        </div>  -->
+    </div>
+
+    <div class="fixed-bottom tool-bar">
+        <div class="container">
+            <button type="button" class="btn btn-outline-success action-start">开 始</button>
+            <button type="button" class="btn btn-outline-warning action-stop hidden">抽 奖</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="lotteryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <img class="card-img-top" src="data/liyanfei.png">
+                <div class="card-body" style="text-align: center;"></div>
+                <div class="modal-footer" style="text-align: center;">
+                    <button type="button" class="btn btn-outline-success action-sure">确认有效</button>
+                    <button type="button" class="btn btn-outline-warning action-continue">重新抽奖</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="library/jquery/jquery.min.js"></script>
+    <script src="library/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="data/users.js"></script>
+    <script src="static/lottery.js"></script>
+  </body>
+</html>

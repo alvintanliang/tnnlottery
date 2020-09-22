@@ -6,47 +6,128 @@
     <title>LZT幸运抽奖</title>
     <link rel="stylesheet" href="library/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="static/style.css">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script> --> 
+    <script src="library/vue/vue.runtime.min.js"></script>
+    
   </head>
 
   <body>
-    <div class="containner user-list" >
-        <!-- <div class="card card-me card-sm card-focus">
-            <img class="card-img-top" src="data/liyanfei.png">
-            <div class="card-body">李燕凤</div>
-        </div> -->
+    <div class="containner user-list">
+        <div class="card card-me card-sm" >
+            <img class="card-img-top" src="data/柳宗全.jpg">
+            <div class="card-body">ccc</div>
+        </div>
+
+        <div v-for="person in persons" v-bind:class="{ card-focus: persion.active }" class="card card-me card-sm card-focus" >
+            <img class="card-img-top" :src="person.image">
+            <div class="card-body">{{ person.name }}</div>
+        </div>
     </div>
 
     <div class="fixed-bottom luck-bar">
-        <!-- <div class="card card-me card-md">
-            <img class="card-img-top" src="data/liyanfei.png">
-            <div class="card-body">李燕凤</div>
-        </div>  -->
+        <div class="card card-me card-md" v-for="winner in winners">
+            <img class="card-img-top" :src="winner.image">
+            <div class="card-body">{{ winner.name }}</div>
+        </div>
     </div>
 
     <div class="fixed-bottom tool-bar">
         <div class="container">
-            <button type="button" class="btn btn-outline-success action-start">开 始</button>
-            <button type="button" class="btn btn-outline-warning action-stop hidden">抽 奖</button>
+            <button type="button" class="btn btn-outline-success action-start" v-on:click="start">开 始</button>
+            <button type="button" class="btn btn-outline-warning action-lottery hidden" v-on:click="lotto">抽 奖</button>
+            <button type="button" class="btn btn-outline-info action-stop" disabled v-on:click="stop">停 止</button>
         </div>
     </div>
 
-    <!-- Modal -->
     <div class="modal fade" id="lotteryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <img class="card-img-top" src="data/liyanfei.png">
+                <img class="card-img-top" src="">
                 <div class="card-body" style="text-align: center;"></div>
                 <div class="modal-footer" style="text-align: center;">
-                    <button type="button" class="btn btn-outline-success action-sure">确认有效</button>
-                    <button type="button" class="btn btn-outline-warning action-continue">重新抽奖</button>
+                    <button type="button" class="btn btn-outline-success action-sure" v-on:click="confirm">确认有效</button>
+                    <button type="button" class="btn btn-outline-warning action-continue" v-on:click="continue">重新抽奖</button>
                 </div>
             </div>
         </div>
     </div>
-
+    <!--
     <script src="library/jquery/jquery.min.js"></script>
     <script src="library/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="data/users.js"></script>
-    <script src="static/lottery.js"></script>
+    -->
+    <script type="text/javascript">
+    var app = new Vue({
+        el: 'body',
+        data: {
+            options: {
+                moveSpeed: 20
+            },
+            running: false,
+            current: -1,
+            persons: [
+                { name: "柳宗全", image: "data/柳宗全.jpg" },
+                { name: "谭亮", image: "data/谭亮.jpg" },
+                { name: "宋昕", image: "data/宋昕.jpg" },
+                { name: "滕喜斌", image: "data/滕喜斌.jpg" },
+                { name: "魏巍", image: "data/魏巍.jpg" },
+                { name: "董京", image: "data/董京.jpg" },
+                { name: "周静", image: "data/周静.jpg" },
+                { name: "温晓晶", image: "data/温晓晶.jpg" }
+            ],
+            winner: null,
+            winners: [],
+            timer: null
+        },
+        methods: {
+            move: function() {
+                if (self.running) {
+                    if (self.current >= 0 && self.current < self.persons.length) {
+                        self.persons[self.current].active = false;
+                    }
+                    self.current = (self.current < self.persons.length - 1) ? (self.current + 1) : 0;
+                    self.persons[self.current].active = true;
+                }
+            },
+            start: function () {
+                self.running = true;
+                self.timer = setInterval(self.move, self.options.moveSpeed);
+            },
+            stop: function() {
+                self.running = false;
+                self.current = -1;
+                for (index in self.persons) {
+                    self.persons[index].active = false;
+                }
+            },
+            lotto: function() {
+                if (self.running) {
+                    if (self.current >= 0 && self.current < (self.persons.length - 1)) {
+                        self.running = false;
+                        self.winner = self.persons[self.current];
+                    } else {
+                        setTimeout(self.lotto, 10);
+                    }
+                }
+            },
+            confirm: function() {
+                if (self.winner) {
+                    self.winners.push(self.winner);
+                    self.persons.splice(self.current, 1);
+
+                    self.current = -1;
+                    self.winner = null;
+                    self.running = false;
+                    
+                    clearInterval(self.timer);
+                    self.timer = false;
+                }
+            },
+            continue: function() {
+                self.winner = null;
+                self.running = true;
+            }
+        }
+    });
+    </script>
   </body>
 </html>

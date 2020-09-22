@@ -48,13 +48,13 @@ body {
 }
 
 .card-md {
-    width: 150px;
+    width: 110px;
 }
 
 .card-md img {
     display: block;
     width: 100%;
-    height: 150px;  
+    height: 110px;  
 }
 
 .card-focus {
